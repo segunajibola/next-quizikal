@@ -1,4 +1,27 @@
-import Image from "next/image";
+import React, { useState } from "react"
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore"; 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCl1hWdJ2kPxE3GlYgLS0at9aslj92EHFc",
+  authDomain: "html-quiz-bb3f6.firebaseapp.com",
+  projectId: "html-quiz-bb3f6",
+  storageBucket: "html-quiz-bb3f6.appspot.com",
+  messagingSenderId: "691341193418",
+  appId: "1:691341193418:web:8491cce4638231b8c20433",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const [ quiz, setQuiz] = useState([])
+
+const querySnapshot = await getDocs(collection(db, "html-q"));
+querySnapshot.forEach((doc) => {
+  console.log(`${doc.id} => ${doc.data()}`);
+});
 
 export default function Home() {
   return (
