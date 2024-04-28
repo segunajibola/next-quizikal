@@ -13,7 +13,7 @@ export default function Home() {
       const quizData = await getQuiz();
       setQuiz(quizData[quizN]);
     } catch (error) {
-      console.error("Error fetching qui", error);
+      console.error("Error fetching quiz", error);
     }
     console.log("quiz", quiz);
   }
