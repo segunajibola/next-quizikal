@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getQuiz } from "../utils/firebase";
+import { getQuiz } from "../api/firebase";
 
 export default function Home() {
   const [quiz, setQuiz] = useState(null);
@@ -36,7 +36,7 @@ export default function Home() {
         <div>Loading quiz...</div>
       ) : (
         quiz.map((quiz) => (
-          <div className="quiz-container" id="quiz">
+          <div className="quiz-container" id="quiz" key={quiz.id}>
             <div className="quiz-header">
               <span id="spanQuestion"></span>
               <h2 id="question">{quiz.question}</h2>
@@ -44,25 +44,25 @@ export default function Home() {
               <ul>
                 <li>
                   <input type="radio" id="a" name="answer" className="answer" />
-                  <label id="a_text" for="a">
+                  <label id="a_text" htmlFor="a">
                     {quiz.a}
                   </label>
                 </li>
                 <li>
                   <input type="radio" id="b" name="answer" className="answer" />
-                  <label id="b_text" for="b">
+                  <label id="b_text" htmlFor="b">
                     {quiz.b}
                   </label>
                 </li>
                 <li>
                   <input type="radio" id="c" name="answer" className="answer" />
-                  <label id="c_text" for="c">
+                  <label id="c_text" htmlFor="c">
                     {quiz.c}
                   </label>
                 </li>
                 <li>
                   <input type="radio" id="d" name="answer" className="answer" />
-                  <label id="d_text" for="d">
+                  <label id="d_text" htmlFor="d">
                     {quiz.d}
                   </label>
                 </li>
@@ -73,7 +73,7 @@ export default function Home() {
             </button>
           </div>
         ))
-      )}      
+      )}
     </div>
   );
 }
