@@ -8,26 +8,21 @@ export default function Home() {
   const [quizN, setQuizN] = useState(0);
 
   async function fetchQuiz(quizN) {
-    console.log("quizN", quizN);
     try {
       const quizData = await getQuiz();
-      setQuiz(quizData[quizN]);
+      setQuiz([quizData[quizN]]);
     } catch (error) {
       console.error("Error fetching quiz:", error);
     }
-    console.log("quiz", quiz);
   }
 
   useEffect(() => {
     fetchQuiz(quizN);
-    console.log("quiz", quiz);
   }, [quizN]);
 
   function submit() {
     setQuizN((prev) => prev + 1);
   }
-  
-  console.log("quiz", quiz);
 
   return (
     <div>
@@ -77,7 +72,8 @@ export default function Home() {
               Submit
             </button>
           </div>
-        )))}
+        ))
+      )}
 
       {/* <button onclick="saveAsPNG()">Save as PNG</button>
      <button onclick="read()">readd</button> */}
