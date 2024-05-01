@@ -4,14 +4,21 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "HTML Quiz",
-  description: "Test your HTML Quiz",
+  title: "Quiz",
+  description: "Test your knowledge",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <footer>
+          <p>
+            Built with <span className="love">&#9829</span> by Segun Ajibola
+          </p>
+        </footer>
+      </body>
     </html>
   );
 }
