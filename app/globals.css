@@ -2,27 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-}
-
 .quiz-container {
   box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  font-size: 1.1rem;
-  margin: 1rem 0;
-}
-
-ul li input,
-label {
-  cursor: pointer;
 }
 
 button {

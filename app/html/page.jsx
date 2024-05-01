@@ -41,28 +41,28 @@ export default function Home() {
               <span id="spanQuestion"></span>
               <h2 className="p-[1rem] text-center m-0">{quiz.question}</h2>
               {/* <!-- ul>li*4>input+label --> */}
-              <ul>
-                <li>
-                  <input type="radio" id="a" name="answer" className="answer" />
-                  <label id="a_text" htmlFor="a">
+              <ul className="list-none p-0">
+                <li className="text-[1.1rem] my-[1rem] mx-0">
+                  <input type="radio" id="a" name="answer" className="cursor-pointer answer" />
+                  <label className="cursor-pointer" id="a_text" htmlFor="a">
                     {quiz.a}
                   </label>
                 </li>
-                <li>
-                  <input type="radio" id="b" name="answer" className="answer" />
-                  <label id="b_text" htmlFor="b">
+                <li className="text-[1.1rem] my-[1rem] mx-0">
+                  <input type="radio" id="b" name="answer" className="cursor-pointer answer" />
+                  <label className="cursor-pointer" id="b_text" htmlFor="b">
                     {quiz.b}
                   </label>
                 </li>
-                <li>
-                  <input type="radio" id="c" name="answer" className="answer" />
-                  <label id="c_text" htmlFor="c">
+                <li className="text-[1.1rem] my-[1rem] mx-0">
+                  <input type="radio" id="c" name="answer" className="cursor-pointer answer" />
+                  <label className="cursor-pointer" id="c_text" htmlFor="c">
                     {quiz.c}
                   </label>
                 </li>
-                <li>
-                  <input type="radio" id="d" name="answer" className="answer" />
-                  <label id="d_text" htmlFor="d">
+                <li className="text-[1.1rem] my-[1rem] mx-0">
+                  <input type="radio" id="d" name="answer" className="cursor-pointer answer" />
+                  <label className="cursor-pointer" id="d_text" htmlFor="d">
                     {quiz.d}
                   </label>
                 </li>
