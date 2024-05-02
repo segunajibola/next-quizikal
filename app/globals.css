@@ -6,28 +6,6 @@
   box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
 }
 
-button {
-  background-color: #c29a45;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: block;
-  font-family: inherit;
-  font-size: 1.3rem;
-  width: 100%;
-  padding: 1rem;
-  margin-top: 3px;
-}
-
-button:hover {
-  background-color: #e4c436;
-}
-
-button:focus {
-  background-color: #ac6e46;
-  outline: none;
-}
-
 #quizResult {
   text-align: center;
 }
@@ -52,15 +30,6 @@ th {
   border: 2px solid #e4c436;
   text-align: left;
   padding: 10px;
-}
-
-footer {
-  text-align: center;
-}
-
-footer p .love {
-  color: red;
-  font-size: 30px;
 }
 
 @media screen and (min-width: 600px) {
