@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getQuiz } from "../api/firebase";
-import html2canvas from "html2canvas";
+import { saveAsPNG } from "@/lib/utils";
 
 export default function Home() {
   const [quiz, setQuiz] = useState(null);
@@ -14,15 +14,6 @@ export default function Home() {
   const [correctCount, setcorrectCount] = useState(0);
   const [wrongCount, setwrongCount] = useState(0);
   const [recentCount, setRecentCount] = useState("");
-
-  function saveAsPNG() {
-    html2canvas(document.getElementById("quizResult")).then(function (canvas) {
-      var link = document.createElement("a");
-      link.href = canvas.toDataURL();
-      link.download = "myQuizResult.png";
-      link.click();
-    });
-  }
 
   async function fetchQuiz(quizN) {
     try {
