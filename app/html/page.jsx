@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { getQuiz } from "../api/firebase";
+import html2canvas from "html2canvas";
 
 export default function Home() {
   const [quiz, setQuiz] = useState(null);
+  const [allQuizData, setAllQuizData] = useState([]);
   const [quizN, setQuizN] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [lastResult, setLastResult] = useState("");
@@ -13,15 +15,26 @@ export default function Home() {
   const [wrongCount, setwrongCount] = useState(0);
   const [recentCount, setRecentCount] = useState("");
 
+  function saveAsPNG() {
+    html2canvas(document.getElementById("quizResult")).then(function (canvas) {
+      var link = document.createElement("a");
+      link.href = canvas.toDataURL();
+      link.download = "myQuizResult.png";
+      link.click();
+    });
+  }
+
   async function fetchQuiz(quizN) {
     try {
       const quizData = await getQuiz();
+      setAllQuizData(quizData);
       setQuiz([quizData[quizN]]);
     } catch (error) {
       console.error("Error fetching quiz:", error);
     }
   }
 
+  console.log("allQuizData", allQuizData);
   useEffect(() => {
     fetchQuiz(quizN);
   }, [quizN]);
@@ -31,38 +44,47 @@ export default function Home() {
   };
 
   const prevQuestion = () => {
+    setQuizN((prev) => prev - 1);
     if (recentCount === "correct") {
       setcorrectCount((prev) => prev - 1);
     } else {
       setwrongCount((prev) => prev - 1);
     }
-    setQuizN((prev) => prev - 1);
     setLastResult("");
   };
 
-  function submit(correctOption) {
+  function submit(correctOption, index) {
     console.log("correctOption", correctOption);
     console.log("selectedOption", selectedOption);
-    setQuizN((prev) => prev + 1);
-    setTimeout(() => {
-      if (correctOption === selectedOption) {
-        setLastResult(
-          <p className="text-green-500">Previous Question: Correct</p>
-        );
-        setcorrectCount((prev) => prev + 1);
-        setRecentCount("correct");
-      } else {
-        setLastResult(<p className="text-red-500">Previous Question: Wrong</p>);
-        setwrongCount((prev) => prev + 1);
-        setRecentCount("wrong");
-      }
+    console.log("index", index);
+    console.log("allQuizData.length", allQuizData.length);
+    console.log("quizN", quizN);
+    if (correctOption === selectedOption) {
       setSelectedOption("");
-    }, 1000);
+      setLastResult(
+        <p className="text-green-500">Previous Question: Correct</p>
+      );
+      setcorrectCount((prev) => prev + 1);
+      setRecentCount("correct");
+    } else {
+      setSelectedOption("");
+      setLastResult(<p className="text-red-500">Previous Question: Wrong</p>);
+      setwrongCount((prev) => prev + 1);
+      setRecentCount("wrong");
+    }
+
+    if (allQuizData.length - quizN === 1) {
+      setQuiz("finished");
+      return;
+    }
+    setQuizN((prev) => prev + 1);
+    console.log("quizN", quizN);
 
     setResult((prev) => [...prev, selectedOption]);
   }
 
   console.log("result", result);
+  console.log("quizN", quizN);
 
   return (
     <div className="h-[80vh]">
@@ -74,11 +96,19 @@ export default function Home() {
       <p className="text-center text-xl py-3" id="quiz_head">
         Can you answer these HTML Questions?
       </p>
-      <div className="flex w-[90%] mx-auto">
+      <div
+        className={`flex ${
+          quiz === "finished" ? "flex-col" : ""
+        } w-[90%] mx-auto`}
+      >
         {quiz === null ? (
           <div>Loading quiz...</div>
+        ) : quiz === "finished" ? (
+          <div className="w-full text-center p-5 text-xl bg-green-500">
+            Quiz finished
+          </div>
         ) : (
-          quiz.map((quiz) => (
+          quiz.map((quiz, index) => (
             <div
               className="bg-[#fff] rounded-[10px] overflow-hidden w-[70%] m-auto quiz-container"
               id="quiz"
@@ -163,28 +193,79 @@ export default function Home() {
                 <button
                   id="submit"
                   className="block bg-[#c29a45] hover:bg-[#e4c436] focus:bg-[#ac6e46] outline-none border-none text-white cursor-pointer text-[1.3rem] w-full p-[1rem] mt-1"
-                  onClick={() => submit(quiz.correct)}
+                  onClick={() => submit(quiz.correct, index)}
                 >
-                  Next
+                  {index === allQuizData.length - 2 ? "Submit" : "Next"}
                 </button>
               </div>
             </div>
           ))
         )}
-        {quiz && (
-          <div className="p-1">
-            <h3 className="text-center text-xl font-semibold py-2">Result</h3>
-            <div className="flex flex-col gap-4">
-              <div>
-                <p>Correct</p>
-                <p className="text-center">{correctCount}</p>
-              </div>
-              <div>
-                <p>Wrong</p>
-                <p className="text-center">{wrongCount}</p>
+        <div id="quizResult" className="p-2">
+          {quiz && (
+            <div className="p-1">
+              <h3
+                className={`text-center ${
+                  quiz === "finished" ? "text-2xl" : "text-xl"
+                } font-semibold py-2`}
+              >
+                Result
+              </h3>
+              <div
+                className={`flex ${
+                  quiz === "finished"
+                    ? "flex-row text-2xl justify-center my-3"
+                    : "flex-col"
+                } gap-4`}
+              >
+                <div className="text-green-500">
+                  <p>Correct</p>
+                  <p className="text-center">{correctCount}</p>
+                </div>
+                <div className="text-red-500">
+                  <p>Wrong</p>
+                  <p className="text-center">{wrongCount}</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+          {quiz === "finished" && (
+            <div className="flex flex-col gap-2 justify-center items-center text-3xl">
+              <p>Score</p>
+              <p className="text-center">
+                {correctCount}/{allQuizData.length}
+              </p>
+              <div className="text-[3rem] my-2">
+                {correctCount / allQuizData.length <= 0.2
+                  ? "😭"
+                  : correctCount / allQuizData.length <= 0.4
+                  ? "😒"
+                  : correctCount / allQuizData.length <= 0.6
+                  ? "😉"
+                  : correctCount / allQuizData.length <= 0.8
+                  ? "😜"
+                  : correctCount / allQuizData.length <= 1
+                  ? "😆🙌"
+                  : ""}
+              </div>
+              <h3 className="text-[1.2rem]">
+                Date & Time completed:{" "}
+                {new Date().toLocaleString("en-US", {
+                  hour12: true,
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </h3>
+            </div>
+          )}
+        </div>
+        {quiz === "finished" && (
+          <button
+            onClick={saveAsPNG}
+            className="text-[1rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
+          >
+            Download Result as PNG
+          </button>
         )}
       </div>
     </div>
