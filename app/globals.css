@@ -6,10 +6,6 @@
   box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
 }
 
-#quizResult {
-  text-align: center;
-}
-
 .missedHeading {
   text-align: center;
   text-decoration: underline;
@@ -26,10 +22,4 @@ th {
   border: 2px solid #e4c436;
   text-align: left;
   padding: 10px;
-}
-
-@media screen and (min-width: 600px) {
-  .quiz-container {
-    width: 80%;
-  }
 }
