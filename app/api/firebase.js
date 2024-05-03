@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+} from "firebase/firestore/lite";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCl1hWdJ2kPxE3GlYgLS0at9aslj92EHFc",
@@ -19,17 +25,23 @@ export async function getQuiz() {
     ...doc.data(),
     id: doc.id,
   }));
-  console.log(quiz)
-  return quiz
+  console.log(quiz);
+  return quiz;
 }
 
-export async function getVans() {
-  // const snapshot = host ? await getDocs(vehiclesCollectionRef) : await getDocs(usersCollectionRef)
-  const snapshot = await getDocs(vehiclesCollectionRef);
-  const vehicles = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  }));
-  // console.log(vehicles);
-  return vehicles;
+export async function sendResult(name, score, total, date, time) {
+  const data = {
+    name,
+    score: `${score}/${total}`,
+    date,
+    time,
+  };
+  try {
+    const docRef = doc(collection(db, "html-result"), name);
+    await setDoc(docRef, data);
+    console.log("Document written with ID: ", docRef.id);
+    console.log("DB Data ", data);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 }
