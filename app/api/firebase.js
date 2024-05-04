@@ -5,6 +5,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  addDoc,
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
@@ -19,8 +20,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function getQuiz() {
-  const snapshot = await getDocs(collection(db, "html-q"));
+export async function getQuiz(quizID) {
+  const snapshot = await getDocs(
+    collection(db, "html-q"),
+    where("id", "===", quizID)
+  );
   const quiz = snapshot.docs.map((doc) => ({
     ...doc.data(),
     id: doc.id,
@@ -41,6 +45,28 @@ export async function sendResult(name, score, total, date, time) {
     await setDoc(docRef, data);
     console.log("Document written with ID: ", docRef.id);
     console.log("DB Data ", data);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+export async function sdba(counter, data) {
+  console.log(data);
+  try {
+    const docRef = doc(collection(db, "html-q"), counter);
+    setDoc(docRef, data);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+export async function sdb(counter, data) {
+  try {
+    const docRef = await addDoc(collection(db, "html-q"), {
+      id: counter,
+      ...data,
+    });
+    console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
