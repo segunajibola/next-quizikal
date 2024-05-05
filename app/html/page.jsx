@@ -20,14 +20,13 @@ export default function Home() {
   const [recentCount, setRecentCount] = useState("");
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
-  // const [counter, setCounter] = useState(2);
 
   async function fetchQuiz(quizN) {
     if (allQuizData.length < 1) {
       try {
         const quizData = await getQuiz();
         console.log(`fetched ${quizN}`);
-        const sortedQuiz = quizData.sort((a, b) => a.id - b.id);
+        const sortedQuiz = quizData.sort((a, b) => a.id - b.id).slice(0, 2);
         setAllQuizData(sortedQuiz);
         setQuiz([sortedQuiz[quizN]]);
       } catch (error) {
@@ -107,7 +106,7 @@ export default function Home() {
   return (
     <>
       {name ? (
-        <div className="">
+        <div className="py-3">
           <h1 className="text-2xl py-3 font-bold tracking-tighter sm:text-3xl md:text-4xl text-center">
             HTML 🎞
           </h1>
