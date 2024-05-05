@@ -6,6 +6,7 @@ import {
   doc,
   setDoc,
   addDoc,
+  updateDoc
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
@@ -20,14 +21,40 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function getQuiz(quizID) {
+async function addSequentialNumbers(collectionName, key) {
+  try {
+    // Get all documents from the specified collection
+    const querySnapshot = await getDocs(collection(db, collectionName));
+
+    let counter = 1;
+
+    // Loop through each document
+    querySnapshot.forEach(async (doc) => {
+      // Get the document reference
+      const docRef = doc(collection(db, collectionName), doc.id);
+
+      // Update the document with the sequential number
+      await updateDoc(docRef, {
+        [key]: counter,
+      });
+
+      console.log(`Added ${key}: ${counter} to document ${doc.id}`);
+
+      counter++;
+    });
+  } catch (error) {
+    console.error("Error adding sequential numbers to documents: ", error);
+  }
+}
+
+
+export async function getQuiz() {
   const snapshot = await getDocs(
     collection(db, "html-q"),
-    where("id", "===", quizID)
   );
   const quiz = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
+    ...doc.data()
+    // id: doc.id,
   }));
   console.log(quiz);
   return quiz;
