@@ -29,7 +29,7 @@ const page = () => {
             </Link>
             <Link
               className="group flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-colors hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800"
-              href="#"
+              href="/css"
             >
               {/* <ChromeIcon className="h-12 w-12 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-50" /> */}
               <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 group-hover:text-gray-900 dark:text-gray-50 dark:group-hover:text-gray-50">
@@ -41,7 +41,7 @@ const page = () => {
             </Link>
             <Link
               className="group flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-colors hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800"
-              href="#"
+              href="/js"
             >
               {/* <CodepenIcon className="h-12 w-12 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-50" /> */}
               <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 group-hover:text-gray-900 dark:text-gray-50 dark:group-hover:text-gray-50">

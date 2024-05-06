@@ -8,7 +8,7 @@ import { saveAsPNG } from "@/lib/utils";
 import { getCurrentDateAndTime } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
 
-export default function Home() {
+export default function Home({ params: { quizType } }) {
   const [quiz, setQuiz] = useState(null);
   const [allQuizData, setAllQuizData] = useState([]);
   const [quizN, setQuizN] = useState(0);
@@ -21,10 +21,11 @@ export default function Home() {
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
 
-  async function fetchQuiz(quizN) {
+  async function fetchQuiz(quizN, quizType) {
+    console.log("quizType", quizType);
     if (allQuizData.length < 1) {
       try {
-        const quizData = await getQuiz();
+        const quizData = await getQuiz(quizType);
         console.log(`fetched ${quizN}`);
         const sortedQuiz = quizData.sort((a, b) => a.id - b.id).slice(0, 2);
         setAllQuizData(sortedQuiz);
@@ -43,7 +44,7 @@ export default function Home() {
   console.log("quiz", quiz);
 
   useEffect(() => {
-    fetchQuiz(quizN);
+    fetchQuiz(quizN, quizType);
   }, [quizN]);
 
   const handleSelectedOption = (e) => {
@@ -330,7 +331,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <Modal onSubmit={handleNameSubmit} quiz={quiz} />
+        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizType} />
       )}
     </>
   );

@@ -6,7 +6,7 @@ import {
   doc,
   setDoc,
   addDoc,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
@@ -47,13 +47,13 @@ async function addSequentialNumbers(collectionName, key) {
   }
 }
 
-
-export async function getQuiz() {
-  const snapshot = await getDocs(
-    collection(db, "html-q"),
-  );
+export async function getQuiz(lang) {
+  console.log(lang)
+  const quizLang = lang === "html" ? "html-q" : lang;
+  console.log(quizLang)
+  const snapshot = await getDocs(collection(db, quizLang));
   const quiz = snapshot.docs.map((doc) => ({
-    ...doc.data()
+    ...doc.data(),
     // id: doc.id,
   }));
   console.log(quiz);
