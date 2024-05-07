@@ -26,7 +26,7 @@ export default function Home({ params: { quizType } }) {
     if (allQuizData.length < 1) {
       try {
         const quizData = await getQuiz(quizType);
-        console.log(`fetched ${quizN}`);
+        console.log(`fetchedD ${quizN}`);
         const sortedQuiz = quizData.sort((a, b) => a.id - b.id);
         setAllQuizData(sortedQuiz);
         setQuiz([sortedQuiz[quizN]]);
