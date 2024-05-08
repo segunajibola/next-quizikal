@@ -321,6 +321,7 @@ export default function Home({ params: { quizType } }) {
                         )
                       }
                       className="text-[.9rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
+                      onClick={}
                     >
                       Upload Result to DataBase
                     </button>
