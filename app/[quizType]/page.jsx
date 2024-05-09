@@ -7,6 +7,7 @@ import { sendResult } from "../api/firebase";
 import { saveAsPNG } from "@/lib/utils";
 import { getCurrentDateAndTime } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
+import Success from "@/components/Success";
 
 export default function Home({ params: { quizType } }) {
   const [quiz, setQuiz] = useState(null);
@@ -20,14 +21,15 @@ export default function Home({ params: { quizType } }) {
   const [recentCount, setRecentCount] = useState("");
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
+  const [showSuccess, setShowSuccess] = useState(false);
 
   async function fetchQuiz(quizN, quizType) {
     console.log("quizType", quizType);
     if (allQuizData.length < 1) {
       try {
         const quizData = await getQuiz(quizType);
-        console.log(`fetchedD ${quizN}`);
-        const sortedQuiz = quizData.sort((a, b) => a.id - b.id);
+        console.log(`fetched ${quizN}`);
+        const sortedQuiz = quizData.sort((a, b) => a.id - b.id).slice(0, 2);
         setAllQuizData(sortedQuiz);
         setQuiz([sortedQuiz[quizN]]);
       } catch (error) {
@@ -67,12 +69,12 @@ export default function Home({ params: { quizType } }) {
   //   setCounter((prev) => prev + 1);
   // }
 
-  function submit(correctOption) {
-    console.log("correctOption", correctOption);
+  function submit(quiz) {
+    console.log("correctOption", quiz.correct);
     console.log("selectedOption", selectedOption);
     console.log("allQuizData.length", allQuizData.length);
     console.log("quizN", quizN);
-    if (correctOption === selectedOption) {
+    if (quiz.correct === selectedOption) {
       setSelectedOption("");
       setLastResult(
         <p className="text-green-500">Previous answer was correct</p>
@@ -84,16 +86,23 @@ export default function Home({ params: { quizType } }) {
       setLastResult(<p className="text-red-500">Previous answer was wrong</p>);
       setwrongCount((prev) => prev + 1);
       setRecentCount("wrong");
+      setResult((prev) => [
+        ...prev,
+        {
+          question: quiz.question,
+          picked: `${selectedOption} - ${quiz[selectedOption]}`,
+          correct: `${quiz.correct} - ${quiz[quiz.correct]}`,
+        },
+      ]);
     }
 
     if (allQuizData.length - quizN === 1) {
       setQuiz("finished");
       return;
     }
+
     setQuizN((prev) => prev + 1);
     console.log("quizN", quizN);
-
-    setResult((prev) => [...prev, selectedOption]);
   }
 
   const handleNameSubmit = (name) => {
@@ -103,6 +112,15 @@ export default function Home({ params: { quizType } }) {
   };
   console.log("result", result);
   console.log("quizN", quizN);
+
+  const handleButtonClick = () => {
+    sendResult(name, correctCount, allQuizData.length, date, time);
+    setShowSuccess(true);
+  };
+
+  const handleCloseSuccess = () => {
+    setShowSuccess(false);
+  };
 
   return (
     <>
@@ -215,7 +233,7 @@ export default function Home({ params: { quizType } }) {
                       </li>
                     </ul>
                   </div>
-                  <div className="text-center p-3 text-xl">{lastResult}</div>
+                  {/* <div className="text-center p-3 text-xl">{lastResult}</div> */}
                   <div className="flex gap-8 justify-center items-center">
                     {quizN > 0 && (
                       <button
@@ -229,7 +247,7 @@ export default function Home({ params: { quizType } }) {
                     <button
                       id="submit"
                       className="block bg-[#c29a45] hover:bg-[#e4c436] focus:bg-[#ac6e46] outline-none border-none text-white cursor-pointer text-[1.3rem] w-full p-[1rem] mt-1"
-                      onClick={() => submit(quiz.correct)}
+                      onClick={() => submit(quiz)}
                     >
                       {allQuizData.length - quizN === 1 ? "Submit" : "Next"}
                     </button>
@@ -237,9 +255,12 @@ export default function Home({ params: { quizType } }) {
                 </div>
               ))
             )}
+            <div className="absolute top-0 right-0">
+              {showSuccess && <Success onClose={handleCloseSuccess} />}
+            </div>
             <div
               className={`flex text-center justify-between ${
-                quiz === "finished" ? "w-[80%]" : "w-[20%]"
+                quiz === "finished" ? "w-[100%]" : "w-[20%]"
               } mx-auto`}
             >
               <div id="quizResult" className="p-2 w-[80%]">
@@ -272,7 +293,7 @@ export default function Home({ params: { quizType } }) {
                 )}
                 {quiz === "finished" && (
                   <div className="flex flex-col gap-2 justify-center items-center text-3xl">
-                    <div className="bg-blue-300 pb-2 px-[12.5vw]">
+                    <div className="pb-2">
                       <p>Score</p>
                       <p className="text-center">
                         {correctCount}/{allQuizData.length}
@@ -301,32 +322,35 @@ export default function Home({ params: { quizType } }) {
                   </div>
                 )}
               </div>
-              <div>
+              <div className="w-[20%]">
                 {quiz === "finished" && (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col justify-center gap-3">
                     <button
                       onClick={saveAsPNG}
-                      className="text-[.9rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
+                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
                     >
                       Download Result Image
                     </button>
                     <button
-                      onClick={() =>
-                        sendResult(
-                          name,
-                          correctCount,
-                          allQuizData.length,
-                          date,
-                          time
-                        )
-                      }
-                      className="text-[.9rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
-                      onClick={}
+                      onClick={handleButtonClick}
+                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
                     >
                       Upload Result to DataBase
                     </button>
+                    <button
+                      onClick={() =>  window.location.reload()}
+                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
+                    >
+                      Restart Quiz
+                    </button>
                   </div>
                 )}
+              </div>
+              <div>
+                Missed questions.
+                <div className="flex flex-col gap-2">
+                  
+                </div>
               </div>
             </div>
           </div>
