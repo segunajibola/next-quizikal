@@ -6,17 +6,6 @@
   box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
 }
 
-.missedHeading {
-  text-align: center;
-  text-decoration: underline;
-}
-
-.missedTable {
-  margin: 10px auto;
-  border-collapse: collapse;
-  width: 90%;
-}
-
 td,
 th {
   border: 2px solid #e4c436;

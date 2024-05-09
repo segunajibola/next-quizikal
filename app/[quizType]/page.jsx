@@ -15,7 +15,7 @@ export default function Home({ params: { quizType } }) {
   const [quizN, setQuizN] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [lastResult, setLastResult] = useState("");
-  const [result, setResult] = useState([]);
+  const [missedAnswers, setMissedAnswers] = useState([]);
   const [correctCount, setcorrectCount] = useState(0);
   const [wrongCount, setwrongCount] = useState(0);
   const [recentCount, setRecentCount] = useState("");
@@ -86,7 +86,7 @@ export default function Home({ params: { quizType } }) {
       setLastResult(<p className="text-red-500">Previous answer was wrong</p>);
       setwrongCount((prev) => prev + 1);
       setRecentCount("wrong");
-      setResult((prev) => [
+      setMissedAnswers((prev) => [
         ...prev,
         {
           question: quiz.question,
@@ -110,11 +110,18 @@ export default function Home({ params: { quizType } }) {
     console.log("name", name);
     console.log("quiz", quiz);
   };
-  console.log("result", result);
+  console.log("missedAnswers", missedAnswers);
   console.log("quizN", quizN);
 
   const handleButtonClick = () => {
-    sendResult(name, correctCount, allQuizData.length, date, time);
+    sendResult(
+      name,
+      correctCount,
+      allQuizData.length,
+      date,
+      time,
+      missedAnswers
+    );
     setShowSuccess(true);
   };
 
@@ -255,7 +262,7 @@ export default function Home({ params: { quizType } }) {
                 </div>
               ))
             )}
-            <div className="absolute top-0 right-0">
+            <div className="fixed top-0 right-0">
               {showSuccess && <Success onClose={handleCloseSuccess} />}
             </div>
             <div
@@ -338,7 +345,7 @@ export default function Home({ params: { quizType } }) {
                       Upload Result to DataBase
                     </button>
                     <button
-                      onClick={() =>  window.location.reload()}
+                      onClick={() => window.location.reload()}
                       className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
                     >
                       Restart Quiz
@@ -346,12 +353,36 @@ export default function Home({ params: { quizType } }) {
                   </div>
                 )}
               </div>
-              <div>
-                Missed questions.
-                <div className="flex flex-col gap-2">
-                  
-                </div>
-              </div>
+            </div>
+            <div className="">
+              {quiz === "finished" && (
+                <>
+                  {missedAnswers.length > 0 ? (
+                    <>
+                      <h3 className="text-center text-xl font-semibold py-2">
+                        {" "}
+                        Missed questions
+                      </h3>
+                      <table className="my-2.5 border-collapse w-[95%] mx-auto">
+                        <tr>
+                          <th>Question</th>
+                          <th>Picked Option</th>
+                          <th>Correct Option</th>
+                        </tr>
+                        {missedAnswers.map((missed) => (
+                          <tr>
+                            <td>{missed.question}</td>
+                            <td>{missed.picked}</td>
+                            <td>{missed.correct}</td>
+                          </tr>
+                        ))}
+                      </table>
+                    </>
+                  ) : (
+                    <h3>You got everything.</h3>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

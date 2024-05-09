@@ -48,9 +48,9 @@ async function addSequentialNumbers(collectionName, key) {
 }
 
 export async function getQuiz(lang) {
-  console.log(lang)
+  console.log(lang);
   const quizLang = lang === "html" ? "html-q" : lang;
-  console.log(quizLang)
+  console.log(quizLang);
   const snapshot = await getDocs(collection(db, quizLang));
   const quiz = snapshot.docs.map((doc) => ({
     ...doc.data(),
@@ -60,12 +60,20 @@ export async function getQuiz(lang) {
   return quiz;
 }
 
-export async function sendResult(name, score, total, date, time) {
+export async function sendResult(
+  name,
+  score,
+  total,
+  date,
+  time,
+  missedAnswers
+) {
   const data = {
     name,
     score: `${score}/${total}`,
     date,
     time,
+    missedAnswers,
   };
   try {
     const docRef = doc(collection(db, "html-result"), name);
