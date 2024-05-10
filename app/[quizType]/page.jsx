@@ -14,7 +14,7 @@ export default function Home({ params: { quizType } }) {
   const [allQuizData, setAllQuizData] = useState([]);
   const [quizN, setQuizN] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
-  const [lastResult, setLastResult] = useState("");
+  // const [lastResult, setLastResult] = useState("");
   const [missedAnswers, setMissedAnswers] = useState([]);
   const [correctCount, setcorrectCount] = useState(0);
   const [wrongCount, setwrongCount] = useState(0);
