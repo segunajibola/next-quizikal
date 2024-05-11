@@ -8,7 +8,9 @@
 
 td,
 th {
-  border: 2px solid #e4c436;
+  border: 2px solid;
   text-align: left;
   padding: 10px;
-}
+  --tw-bd-opacity: 1;
+  border-color: rgb(34 197 94 / var(--tw-bd-opacity));
+};

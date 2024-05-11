@@ -8,6 +8,7 @@ import { saveAsPNG } from "@/lib/utils";
 import { getCurrentDateAndTime } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
 import Success from "@/components/Success";
+import QuizResult from "@/components/QuizResult";
 
 export default function Home({ params: { quizType } }) {
   const [quiz, setQuiz] = useState(null);
@@ -117,7 +118,7 @@ export default function Home({ params: { quizType } }) {
   console.log("missedAnswers", missedAnswers);
   console.log("quizN", quizN);
 
-  const handleButtonClick = () => {
+  const uploadToDB = () => {
     sendResult(
       name,
       correctCount,
@@ -274,7 +275,16 @@ export default function Home({ params: { quizType } }) {
                 quiz === "finished" ? "w-[100%]" : "w-[20%]"
               } mx-auto`}
             >
-              <div id="quizResult" className="p-2 w-[80%]">
+              <QuizResult
+                name={name}
+                correctCount={correctCount}
+                total={allQuizData}
+                date={date}
+                time={time}
+                uploadToDB={uploadToDB}
+                saveAsPNG={saveAsPNG}
+              />
+              {/* <div id="quizResult" className="p-2 w-[80%]">
                 {quiz && (
                   <div className="p-1">
                     <h3
@@ -302,7 +312,7 @@ export default function Home({ params: { quizType } }) {
                     </div>
                   </div>
                 )}
-                {quiz === "finished" && (
+                 {quiz === "finished" && (
                   <div className="flex flex-col gap-2 justify-center items-center text-3xl">
                     <div className="pb-2">
                       <p>Score</p>
@@ -310,19 +320,7 @@ export default function Home({ params: { quizType } }) {
                         {correctCount}/{allQuizData.length}
                       </p>
                     </div>
-                    <div className="text-[3rem] my-2">
-                      {correctCount / allQuizData.length <= 0.2
-                        ? "😭"
-                        : correctCount / allQuizData.length <= 0.4
-                        ? "😒"
-                        : correctCount / allQuizData.length <= 0.6
-                        ? "😉"
-                        : correctCount / allQuizData.length <= 0.8
-                        ? "😜"
-                        : correctCount / allQuizData.length <= 1
-                        ? "😆🙌"
-                        : ""}
-                    </div>
+                    
                     <div className="text-[1.2rem] text-center">
                       <h3>Name: {name}</h3>
                       <div className="flex gap-2">
@@ -331,32 +329,8 @@ export default function Home({ params: { quizType } }) {
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
-              <div className="w-[20%]">
-                {quiz === "finished" && (
-                  <div className="flex flex-col justify-center gap-3">
-                    <button
-                      onClick={saveAsPNG}
-                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
-                    >
-                      Download Result Image
-                    </button>
-                    <button
-                      onClick={handleButtonClick}
-                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
-                    >
-                      Upload Result to DataBase
-                    </button>
-                    <button
-                      onClick={() => window.location.reload()}
-                      className="text-[.8rem] bg-gray-500 text-white p-2 rounded-md m-2 w-auto mx-auto"
-                    >
-                      Restart Quiz
-                    </button>
-                  </div>
-                )}
-              </div>
+                )} 
+              </div> */}
             </div>
             <div className="">
               {quiz === "finished" && (
@@ -364,7 +338,6 @@ export default function Home({ params: { quizType } }) {
                   {missedAnswers.length > 0 ? (
                     <>
                       <h3 className="text-center text-xl font-semibold py-2">
-                        {" "}
                         Missed questions
                       </h3>
                       <table className="my-2.5 border-collapse w-[95%] mx-auto">
@@ -383,7 +356,9 @@ export default function Home({ params: { quizType } }) {
                       </table>
                     </>
                   ) : (
-                    <h3>You got everything.</h3>
+                    <h3 className="text-center mb-3 text-lg">
+                      You got everything!!!
+                    </h3>
                   )}
                 </>
               )}
@@ -391,7 +366,7 @@ export default function Home({ params: { quizType } }) {
           </div>
         </div>
       ) : (
-        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizTypeSentenceCase} />
+        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizType} />
       )}
     </>
   );
