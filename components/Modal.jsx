@@ -21,11 +21,6 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
     onSubmit(name);
   };
 
-  const quizTypeSentenceCase =
-    quizType === "js"
-      ? "JavaScript"
-      : quizType.charAt(0).toUpperCase() + quizType.slice(1);
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-950">
@@ -36,8 +31,7 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
         </div>
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">
-            Enter your Full name before starting the {quizTypeSentenceCase}{" "}
-            quiz.
+            Enter your Full name before starting the {quizType} quiz.
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-2">
@@ -53,9 +47,7 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
               )}
             </div>
             <Button className="w-full" type="submit">
-              {name && !quiz
-                ? "Please wait..."
-                : `Start ${quizTypeSentenceCase} Quiz`}
+              {name && !quiz ? "Please wait..." : `Start ${quizType} Quiz`}
             </Button>
           </form>
         </div>

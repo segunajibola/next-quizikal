@@ -22,6 +22,10 @@ export default function Home({ params: { quizType } }) {
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
   const [showSuccess, setShowSuccess] = useState(false);
+  const quizTypeSentenceCase =
+    quizType === "js"
+      ? "JavaScript"
+      : quizType.charAt(0).toUpperCase() + quizType.slice(1);
 
   async function fetchQuiz(quizN, quizType) {
     console.log("quizType", quizType);
@@ -76,14 +80,14 @@ export default function Home({ params: { quizType } }) {
     console.log("quizN", quizN);
     if (quiz.correct === selectedOption) {
       setSelectedOption("");
-      setLastResult(
-        <p className="text-green-500">Previous answer was correct</p>
-      );
+      // setLastResult(
+      //   <p className="text-green-500">Previous answer was correct</p>
+      // );
       setcorrectCount((prev) => prev + 1);
       setRecentCount("correct");
     } else {
       setSelectedOption("");
-      setLastResult(<p className="text-red-500">Previous answer was wrong</p>);
+      // setLastResult(<p className="text-red-500">Previous answer was wrong</p>);
       setwrongCount((prev) => prev + 1);
       setRecentCount("wrong");
       setMissedAnswers((prev) => [
@@ -387,7 +391,7 @@ export default function Home({ params: { quizType } }) {
           </div>
         </div>
       ) : (
-        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizType} />
+        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizTypeSentenceCase} />
       )}
     </>
   );
