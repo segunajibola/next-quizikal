@@ -9,6 +9,7 @@ import { getCurrentDateAndTime } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
 import Success from "@/components/Success";
 import QuizResult from "@/components/QuizResult";
+import MissedTable from "@/components/MissedTable";
 
 export default function Home({ params: { quizType } }) {
   const [quiz, setQuiz] = useState(null);
@@ -68,12 +69,6 @@ export default function Home({ params: { quizType } }) {
     setLastResult("");
   };
 
-  // async function sdbh() {
-  //   console.log(counter, htmlQuizData[counter]);
-  //   await sdb(counter, htmlQuizData[counter]);
-  //   setCounter((prev) => prev + 1);
-  // }
-
   function submit(quiz) {
     console.log("correctOption", quiz.correct);
     console.log("selectedOption", selectedOption);
@@ -81,14 +76,12 @@ export default function Home({ params: { quizType } }) {
     console.log("quizN", quizN);
     if (quiz.correct === selectedOption) {
       setSelectedOption("");
-      // setLastResult(
-      //   <p className="text-green-500">Previous answer was correct</p>
-      // );
+
       setcorrectCount((prev) => prev + 1);
       setRecentCount("correct");
     } else {
       setSelectedOption("");
-      // setLastResult(<p className="text-red-500">Previous answer was wrong</p>);
+
       setwrongCount((prev) => prev + 1);
       setRecentCount("wrong");
       setMissedAnswers((prev) => [
@@ -139,12 +132,10 @@ export default function Home({ params: { quizType } }) {
       {name ? (
         <div className="py-3">
           <h1 className="text-2xl py-3 font-bold tracking-tighter sm:text-3xl md:text-4xl text-center">
-            HTML 🎞
+            {quizTypeSentenceCase.toUpperCase()}
           </h1>
-          {/* <p className="quiz_header_text" id="quiz_header_text">
-      Can you answer these HTML, CSS & JavaScript Questions?</p> */}
           <p className="text-center text-xl py-3" id="quiz_head">
-            Can you answer these HTML Questions?
+            Can you answer these {quizTypeSentenceCase.toUpperCase()} Questions?
           </p>
           <div
             className={`flex ${
@@ -154,7 +145,7 @@ export default function Home({ params: { quizType } }) {
             {quiz === null ? (
               <div>Loading quiz...</div>
             ) : quiz === "finished" ? (
-              <div className="w-full text-center p-5 text-xl bg-green-500">
+              <div className="w-full text-center p-5 text-xl bg-green-400">
                 Quiz finished
               </div>
             ) : (
@@ -245,7 +236,6 @@ export default function Home({ params: { quizType } }) {
                       </li>
                     </ul>
                   </div>
-                  {/* <div className="text-center p-3 text-xl">{lastResult}</div> */}
                   <div className="flex gap-8 justify-center items-center">
                     {quizN > 0 && (
                       <button
@@ -271,8 +261,8 @@ export default function Home({ params: { quizType } }) {
               {showSuccess && <Success onClose={handleCloseSuccess} />}
             </div>
             <div
-              className={`flex text-center justify-between ${
-                quiz === "finished" ? "w-[100%]" : "w-[20%]"
+              className={`text-center justify-between ${
+                quiz === "finished" ? "flex w-[90%]" : "hidden"
               } mx-auto`}
             >
               <QuizResult
@@ -284,77 +274,12 @@ export default function Home({ params: { quizType } }) {
                 uploadToDB={uploadToDB}
                 saveAsPNG={saveAsPNG}
               />
-              {/* <div id="quizResult" className="p-2 w-[80%]">
-                {quiz && (
-                  <div className="p-1">
-                    <h3
-                      className={`text-center ${
-                        quiz === "finished" ? "text-2xl" : "text-xl"
-                      } font-semibold py-2`}
-                    >
-                      Result
-                    </h3>
-                    <div
-                      className={`flex ${
-                        quiz === "finished"
-                          ? "flex-row text-2xl justify-center my-3"
-                          : "flex-col"
-                      } gap-4`}
-                    >
-                      <div className="text-green-500">
-                        <p>Correct</p>
-                        <p className="text-center">{correctCount}</p>
-                      </div>
-                      <div className="text-red-500">
-                        <p>Wrong</p>
-                        <p className="text-center">{wrongCount}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                 {quiz === "finished" && (
-                  <div className="flex flex-col gap-2 justify-center items-center text-3xl">
-                    <div className="pb-2">
-                      <p>Score</p>
-                      <p className="text-center">
-                        {correctCount}/{allQuizData.length}
-                      </p>
-                    </div>
-                    
-                    <div className="text-[1.2rem] text-center">
-                      <h3>Name: {name}</h3>
-                      <div className="flex gap-2">
-                        <h3>Date: {date}</h3>
-                        <h3>Time: {time}</h3>
-                      </div>
-                    </div>
-                  </div>
-                )} 
-              </div> */}
             </div>
             <div className="">
               {quiz === "finished" && (
                 <>
-                  {missedAnswers.length > 0 ? (
-                    <>
-                      <h3 className="text-center text-xl font-semibold py-2">
-                        Missed questions
-                      </h3>
-                      <table className="my-2.5 border-collapse w-[95%] mx-auto">
-                        <tr>
-                          <th>Question</th>
-                          <th>Picked Option</th>
-                          <th>Correct Option</th>
-                        </tr>
-                        {missedAnswers.map((missed) => (
-                          <tr>
-                            <td>{missed.question}</td>
-                            <td>{missed.picked}</td>
-                            <td>{missed.correct}</td>
-                          </tr>
-                        ))}
-                      </table>
-                    </>
+                  {missedAnswers ? (
+                    <MissedTable missedAnswers={missedAnswers} />
                   ) : (
                     <h3 className="text-center mb-3 text-lg">
                       You got everything!!!
@@ -366,7 +291,7 @@ export default function Home({ params: { quizType } }) {
           </div>
         </div>
       ) : (
-        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizType} />
+        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizTypeSentenceCase} />
       )}
     </>
   );

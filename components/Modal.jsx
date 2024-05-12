@@ -24,7 +24,7 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-950">
-        <div className="flex flex-right">
+        <div className="flex justify-end">
           <a href="/" className="p-1 text-xl">
             x
           </a>
@@ -35,7 +35,9 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-lg">
+                Full Name
+              </Label>
               <Input
                 id="name"
                 placeholder="type your fullname"
