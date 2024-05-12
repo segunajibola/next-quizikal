@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex flex-col justify-between h-[100vh]`}
+        className={`${inter.className} flex flex-col justify-between min-h-screen`}
       >
         <NavBar />
         <div>{children}</div>

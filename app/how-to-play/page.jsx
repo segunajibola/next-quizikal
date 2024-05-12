@@ -14,15 +14,20 @@ export default function HowToPlay() {
             <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
               1
             </span>
-            <div>
-              Click the
-              <strong>Start Quiz</strong>
-              button on the homepage to begin.{"\n                    "}
-            </div>
+            <div>Choose a language on the homepage to begin.</div>
           </li>
           <li className="flex items-start gap-4">
             <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
               2
+            </span>
+            <div>
+              Input your name, then start the quiz with the{" "}
+              <strong> Start Quiz </strong> button
+            </div>
+          </li>
+          <li className="flex items-start gap-4">
+            <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
+              3
             </span>
             <div>
               Read each question carefully and select the correct answer from
@@ -31,20 +36,12 @@ export default function HowToPlay() {
           </li>
           <li className="flex items-start gap-4">
             <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
-              3
-            </span>
-            <div>
-              After answering a question, click
-              <strong>Next</strong>
-              to move on to the next question.
-            </div>
-          </li>
-          <li className="flex items-start gap-4">
-            <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
               4
             </span>
             <div>
-              Keep answering questions until you reach the end of the quiz.
+              After answering a question, click
+              <strong> Next </strong>
+              to move on to the next question.
             </div>
           </li>
           <li className="flex items-start gap-4">
@@ -52,12 +49,21 @@ export default function HowToPlay() {
               5
             </span>
             <div>
-              Your final score will be displayed once you complete the quiz.
+              Keep answering questions until you reach the end of the quiz,
+              where you only see the <strong> Submit </strong> button.
             </div>
           </li>
           <li className="flex items-start gap-4">
             <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
               6
+            </span>
+            <div>
+              Your final score will be displayed once you complete the quiz.
+            </div>
+          </li>
+          <li className="flex items-start gap-4">
+            <span className="flex-none rounded-full bg-gray-900 px-3 py-1 text-white dark:bg-gray-50 dark:text-gray-900">
+              7
             </span>
             <div>
               You can retake the quiz as many times as you like to try and
