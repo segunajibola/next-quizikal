@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function Contribute() {
       const owner = "segunajibola";
       const repo = "next-quizikal";
 
-      // const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+      const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
       const response = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/collaborators`,
@@ -36,11 +36,10 @@ export default function Contribute() {
       setCollaborators(collaboratorsRes);
     }
 
-    // Fetch collaborators when the component mounts or when the route changes
     if (router.isReady) {
       fetchContributors();
     }
-  }, [router.asPath]); // Fetch data when route changes
+  }, [router.asPath]);
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
