@@ -1,6 +1,7 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GoIssueOpened } from "react-icons/go";
@@ -8,7 +9,9 @@ import { CiStar } from "react-icons/ci";
 import { FaGithub } from "react-icons/fa";
 
 export default function Contribute() {
-  const [collaborators, setCollaborators] = useState("");
+  const router = useRouter();
+  const [collaborators, setCollaborators] = useState([]);
+
   useEffect(() => {
     async function fetchContributors() {
       const owner = "segunajibola";
@@ -24,19 +27,20 @@ export default function Contribute() {
           },
         }
       );
-      const collaborators = await response.json();
-      console.log("collaborators", collaborators);
-      setCollaborators(collaborators);
 
-      return {
-        props: {
-          collaborators,
-        },
-      };
+      if (!response.ok) {
+        throw new Error("Failed to fetch collaborators");
+      }
+
+      const collaboratorsRes = await response.json();
+      setCollaborators(collaboratorsRes);
     }
 
-    fetchContributors();
-  }, []);
+    // Fetch collaborators when the component mounts or when the route changes
+    if (router.isReady) {
+      fetchContributors();
+    }
+  }, [router.asPath]); // Fetch data when route changes
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
@@ -74,10 +78,7 @@ export default function Contribute() {
                   <span>View on GitHub</span>
                 </Button>
               </a>
-              <a
-                href="https://github.com/segunajibola/next-quizikal/stargazers
-"
-              >
+              <a href="https://github.com/segunajibola/next-quizikal/stargazers">
                 <Button
                   className="flex items-center space-x-2"
                   variant="primary"
@@ -86,14 +87,6 @@ export default function Contribute() {
                   <span>Star project</span>
                 </Button>
               </a>
-
-              <iframe
-                src="https://ghbtns.com/github-btn.html?user=segunajibola&repo=next-quizikal&type=star&count=true&size=large"
-                frameborder="0"
-                width="170"
-                height="30"
-                title="GitHub"
-              ></iframe>
               <a href="https://github.com/segunajibola/next-quizikal/issues">
                 <Button
                   className="flex items-center space-x-2"
@@ -109,24 +102,23 @@ export default function Contribute() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">Project Collaborators</h2>
           <div className="flex flex-wrap space-x-2 text-center">
-            {collaborators &&
-              collaborators.map((collaborator) => (
-                <div
-                  className="flex flex-col gap-1 justify-center items-center"
-                  key={collaborator.id}
-                >
-                  <img
-                    src={collaborator.avatar_url}
-                    className="w-20 h-20 rounded-[50%]"
-                    alt=""
-                    srcset=""
-                  />
-                  <a href={collaborator.html_url} className="underline">
-                    {collaborator.login}
-                  </a>
-                  <span>{collaborator.role_name}</span>
-                </div>
-              ))}
+            {collaborators.map((collaborator) => (
+              <div
+                className="flex flex-col gap-1 justify-center items-center"
+                key={collaborator.id}
+              >
+                <img
+                  src={collaborator.avatar_url}
+                  className="w-20 h-20 rounded-[50%]"
+                  alt=""
+                  srcSet=""
+                />
+                <a href={collaborator.html_url} className="underline">
+                  {collaborator.login}
+                </a>
+                <span>{collaborator.role_name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
