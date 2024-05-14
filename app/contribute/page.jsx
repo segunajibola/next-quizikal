@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GoIssueOpened } from "react-icons/go";
@@ -9,7 +8,6 @@ import { CiStar } from "react-icons/ci";
 import { FaGithub } from "react-icons/fa";
 
 export default function Contribute() {
-  const router = useRouter();
   const [collaborators, setCollaborators] = useState([]);
 
   useEffect(() => {
@@ -18,6 +16,7 @@ export default function Contribute() {
       const repo = "next-quizikal";
 
       const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+      console.log("githubToken", githubToken);
 
       const response = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/collaborators`,
@@ -33,13 +32,13 @@ export default function Contribute() {
       }
 
       const collaboratorsRes = await response.json();
+      console.log("collaboratorsRes", collaboratorsRes);
+      console.log("collaboratorsRes");
       setCollaborators(collaboratorsRes);
     }
 
-    if (router.isReady) {
-      fetchContributors();
-    }
-  }, [router.asPath]); // Fetch data when route changes
+    fetchContributors();
+  }, []);
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
@@ -101,23 +100,24 @@ export default function Contribute() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">Project Collaborators</h2>
           <div className="flex flex-wrap space-x-2 text-center">
-            {collaborators.map((collaborator) => (
-              <div
-                className="flex flex-col gap-1 justify-center items-center"
-                key={collaborator.id}
-              >
-                <img
-                  src={collaborator.avatar_url}
-                  className="w-20 h-20 rounded-[50%]"
-                  alt=""
-                  srcSet=""
-                />
-                <a href={collaborator.html_url} className="underline">
-                  {collaborator.login}
-                </a>
-                <span>{collaborator.role_name}</span>
-              </div>
-            ))}
+            {collaborators &&
+              collaborators.map((collaborator) => (
+                <div
+                  className="flex flex-col gap-1 justify-center items-center"
+                  key={collaborator.id}
+                >
+                  <img
+                    src={collaborator.avatar_url}
+                    className="w-20 h-20 rounded-[50%]"
+                    alt=""
+                    srcSet=""
+                  />
+                  <a href={collaborator.html_url} className="underline">
+                    {collaborator.login}
+                  </a>
+                  <span>{collaborator.role_name}</span>
+                </div>
+              ))}
           </div>
         </div>
       </div>

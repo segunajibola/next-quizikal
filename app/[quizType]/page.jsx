@@ -147,7 +147,7 @@ export default function Home({ params: { quizType } }) {
             ) : (
               quiz.map((quiz) => (
                 <div
-                  className="bg-[#fff] rounded-[10px] overflow-hidden w-[80%] m-auto quiz-container"
+                  className="bg-[#fff] rounded-[10px] overflow-hidden w-[80%] m-auto quiz-container text-center"
                   id="quiz"
                   key={quiz.id}
                 >
