@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -39,7 +39,7 @@ export default function Contribute() {
     if (router.isReady) {
       fetchContributors();
     }
-  }, [router.asPath]);
+  }, [router.asPath]); // Fetch data when route changes
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
