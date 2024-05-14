@@ -31,7 +31,7 @@ export const Modal = ({ onSubmit, quiz, quizType }) => {
         </div>
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">
-            Enter your Full name before starting the {quizType} quiz.
+            Enter your full name before starting the {quizType} quiz.
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-2">

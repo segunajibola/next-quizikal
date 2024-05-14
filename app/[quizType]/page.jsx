@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { getQuiz } from "../api/firebase";
 import { sendResult } from "../api/firebase";
-// import { sdb } from "../api/firebase";
 import { saveAsPNG } from "@/lib/utils";
 import { getCurrentDateAndTime } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
@@ -16,7 +15,6 @@ export default function Home({ params: { quizType } }) {
   const [allQuizData, setAllQuizData] = useState([]);
   const [quizN, setQuizN] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
-  // const [lastResult, setLastResult] = useState("");
   const [missedAnswers, setMissedAnswers] = useState([]);
   const [correctCount, setcorrectCount] = useState(0);
   const [wrongCount, setwrongCount] = useState(0);
@@ -24,10 +22,8 @@ export default function Home({ params: { quizType } }) {
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
   const [showSuccess, setShowSuccess] = useState(false);
-  const quizTypeSentenceCase =
-    quizType === "js"
-      ? "JavaScript"
-      : quizType.charAt(0).toUpperCase() + quizType.slice(1);
+  const quizTypeNew =
+    quizType === "js" ? "JavaScript" : quizType.toUpperCase();
 
   async function fetchQuiz(quizN, quizType) {
     console.log("quizType", quizType);
@@ -291,7 +287,11 @@ export default function Home({ params: { quizType } }) {
           </div>
         </div>
       ) : (
-        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizTypeSentenceCase} />
+        <Modal
+          onSubmit={handleNameSubmit}
+          quiz={quiz}
+          quizType={quizTypeNew}
+        />
       )}
     </>
   );
