@@ -16,7 +16,6 @@ export default function Contribute() {
       const repo = "next-quizikal";
 
       const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
-      console.log("githubToken", githubToken);
 
       const response = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/collaborators`,
