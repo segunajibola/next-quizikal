@@ -31,7 +31,7 @@ export default function Contribute() {
       }
 
       const collaboratorsRes = await response.json();
-      console.log("collaboratorsRes", collaboratorsRes);
+      console.log("collaboratorsRges", collaboratorsRes);
       setCollaborators(collaboratorsRes);
     }
 
