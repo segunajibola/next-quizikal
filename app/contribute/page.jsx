@@ -1,39 +1,19 @@
 "use client";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GoIssueOpened } from "react-icons/go";
 import { CiStar } from "react-icons/ci";
 import { FaGithub } from "react-icons/fa";
-import { fetchCollaborators } from "@/lib/utils";
 import Collaborators from "@/components/Collaborators";
+import { useCollaborators } from "@/hooks/useCollaborators";
 
-const queryClient = new QueryClient();
-
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Contribute />
-    </QueryClientProvider>
-  );
-}
-
-function Contribute() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["quizikal-collaborators"],
-    queryFn: fetchCollaborators,
-  });
+export default function page() {
+  const { isPending, error, data } = useCollaborators();
 
   if (isPending) return "Loading..";
 
   if (error) return "An error has occurred: " + error.message;
-
-  console.log(data);
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
@@ -96,7 +76,10 @@ function Contribute() {
           <h2 className="text-2xl font-bold">Project Collaborators</h2>
           <div className="flex flex-wrap space-x-2 text-center">
             {data.map((collaborator) => (
-              <Collaborators key={collaborator.id} collaborator={collaborator} />
+              <Collaborators
+                key={collaborator.id}
+                collaborator={collaborator}
+              />
             ))}
           </div>
         </div>
