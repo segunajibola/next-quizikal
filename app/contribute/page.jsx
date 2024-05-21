@@ -8,10 +8,8 @@ import { FaGithub } from "react-icons/fa";
 import Collaborators from "@/components/Collaborators";
 import { useCollaborators } from "@/hooks/useCollaborators";
 
-export default function page() {
+export default function Page() {
   const { isPending, error, data } = useCollaborators();
-
-  if (isPending) return "Loading..";
 
   if (error) return "An error has occurred: " + error.message;
 
@@ -74,14 +72,18 @@ export default function page() {
         </div>
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">Project Collaborators</h2>
-          <div className="flex flex-wrap space-x-2 text-center">
-            {data.map((collaborator) => (
-              <Collaborators
-                key={collaborator.id}
-                collaborator={collaborator}
-              />
-            ))}
-          </div>
+          {isPending ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="flex flex-wrap space-x-2 text-center">
+              {data.map((collaborator) => (
+                <Collaborators
+                  key={collaborator.id}
+                  collaborator={collaborator}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </main>

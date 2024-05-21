@@ -5,6 +5,11 @@ export const useCollaborators = () => {
   return useQuery({
     queryKey: ["quizikal-collaborators"],
     queryFn: fetchCollaborators,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
   });
 };
 
