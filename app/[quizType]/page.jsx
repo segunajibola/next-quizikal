@@ -128,10 +128,10 @@ export default function Home({ params: { quizType } }) {
       {name ? (
         <div className="py-3">
           <h1 className="text-2xl py-3 font-bold tracking-tighter sm:text-3xl md:text-4xl text-center">
-            {quizTypeSentenceCase.toUpperCase()}
+            {quizTypeNew}
           </h1>
           <p className="text-center text-xl py-3" id="quiz_head">
-            Can you answer these {quizTypeSentenceCase.toUpperCase()} Questions?
+            Can you answer these {quizTypeNew} Questions?
           </p>
           <div
             className={`flex ${
