@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { GoIssueOpened } from "react-icons/go";
 import { CiStar } from "react-icons/ci";
 import { FaGithub } from "react-icons/fa";
+import { fetchCollaborators } from "@/lib/utils";
+import Collaborators from "@/components/Collaborators";
 
 const queryClient = new QueryClient();
 
@@ -22,35 +24,16 @@ export default function App() {
 }
 
 function Contribute() {
-  const fetchCollaborators = async () => {
-    const owner = "segunajibola";
-    const repo = "next-quizikal";
-    const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
-
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/collaborators`,
-      {
-        headers: {
-          Authorization: `token ${githubToken}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch collaborators");
-    }
-
-    return response.json();
-  };
-
   const { isPending, error, data } = useQuery({
     queryKey: ["quizikal-collaborators"],
     queryFn: fetchCollaborators,
   });
 
-  if (isPending) return "Loading...";
+  if (isPending) return "Loading..";
 
   if (error) return "An error has occurred: " + error.message;
+
+  console.log(data);
 
   return (
     <main className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
@@ -113,21 +96,7 @@ function Contribute() {
           <h2 className="text-2xl font-bold">Project Collaborators</h2>
           <div className="flex flex-wrap space-x-2 text-center">
             {data.map((collaborator) => (
-              <div
-                className="flex flex-col gap-1 justify-center items-center"
-                key={collaborator.id}
-              >
-                <img
-                  src={collaborator.avatar_url}
-                  className="w-20 h-20 rounded-[50%]"
-                  alt=""
-                  srcSet=""
-                />
-                <a href={collaborator.html_url} className="underline">
-                  {collaborator.login}
-                </a>
-                <span>{collaborator.role_name}</span>
-              </div>
+              <Collaborators key={collaborator.id} collaborator={collaborator} />
             ))}
           </div>
         </div>
