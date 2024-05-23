@@ -22,8 +22,7 @@ export default function Home({ params: { quizType } }) {
   const [name, setName] = useState("");
   const { date, time } = getCurrentDateAndTime();
   const [showSuccess, setShowSuccess] = useState(false);
-  const quizTypeNew =
-    quizType === "js" ? "JavaScript" : quizType.toUpperCase();
+  const quizTypeNew = quizType === "js" ? "JavaScript" : quizType.toUpperCase();
 
   async function fetchQuiz(quizN, quizType) {
     console.log("quizType", quizType);
@@ -274,7 +273,7 @@ export default function Home({ params: { quizType } }) {
             <div className="">
               {quiz === "finished" && (
                 <>
-                  {missedAnswers ? (
+                  {missedAnswers.length > 0 ? (
                     <MissedTable missedAnswers={missedAnswers} />
                   ) : (
                     <h3 className="text-center mb-3 text-lg">
@@ -287,11 +286,7 @@ export default function Home({ params: { quizType } }) {
           </div>
         </div>
       ) : (
-        <Modal
-          onSubmit={handleNameSubmit}
-          quiz={quiz}
-          quizType={quizTypeNew}
-        />
+        <Modal onSubmit={handleNameSubmit} quiz={quiz} quizType={quizTypeNew} />
       )}
     </>
   );
