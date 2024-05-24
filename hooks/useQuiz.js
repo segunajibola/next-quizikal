@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { getQuiz } from "@/app/api/firebase";
 
 export const useQuizData = (lang) => {

@@ -14,7 +14,7 @@ import { useQuizData } from "@/hooks/useQuiz";
 
 export default function Home({ params: { quizType } }) {
   const { isPending, error, data } = useQuizData(quizType);
-  console.log(data);
+  console.log("data from query", data);
 
   const [quiz, setQuiz] = useState(null);
   const [allQuizData, setAllQuizData] = useState([]);
